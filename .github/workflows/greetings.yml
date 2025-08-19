@@ -31,12 +31,12 @@ jobs:
       - name: Merge PRs with enough approvals
         uses: actions/github-script@v7
         env:
-          PRS: ${{ steps.prs.outputs.result }}
+          PR: ${{ steps.prs.outputs.result }}
         with:
           script: |
             const MIN_APPROVALS = 0; // set the threshold you want
             // Parse PR numbers from previous step
-            const prNumbers = JSON.parse(process.env.PRS || "[]");
+            const prNumbers = JSON.parse(process.env.PR || "[]");
 
             for (const pr_number of prNumbers) {
               const reviews = await github.rest.pulls.listReviews({
