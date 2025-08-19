@@ -35,8 +35,9 @@ jobs:
         with:
           script: |
             const MIN_APPROVALS = 0; // set the threshold you want
-            // Parse PR numbers from previous step
+            console.log("🔍 Raw PR list:", process.env.PR);
             const prNumbers = JSON.parse(process.env.PR || "[]");
+            console.log("📋 Parsed PR numbers:", prNumbers);
 
             for (const pr_number of prNumbers) {
               const reviews = await github.rest.pulls.listReviews({
