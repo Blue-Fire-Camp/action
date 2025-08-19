@@ -26,7 +26,7 @@ jobs:
               state: 'open'
             });
             // Return PR numbers as JSON string
-            return JSON.stringify(prs.data.map(pr => pr.number));
+            return JSON.stringify(prs.data.map(pr => pr.number)).join(",");
 
       - name: Merge PRs with enough approvals
         uses: actions/github-script@v7
@@ -36,7 +36,7 @@ jobs:
           script: |
             const MIN_APPROVALS = 0; // set the threshold you want
             console.log("🔍 Raw PR list:", process.env.PR);
-            const prNumbers = JSON.parse(process.env.PR || "[]").join(",");
+            const prNumbers = JSON.parse(process.env.PR || "[]");
             console.log("📋 Parsed PR numbers:", prNumbers);
 
             for (const pr_number of prNumbers) {
