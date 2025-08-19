@@ -49,7 +49,7 @@ jobs:
               for (const r of reviews.data) {
               latestReviews[r.user.login] = r.state;
               }
-              const approvedCount = Object.values(latestReviews).filter(r => r.state === "APPROVED").length;
+              const approvedCount = Object.values(latestReviews).filter(r => r === "APPROVED").length;
 
               if (approvedCount >= MIN_APPROVALS) {
                 await github.rest.pulls.merge({
