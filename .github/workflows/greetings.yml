@@ -34,7 +34,9 @@ jobs:
           PR: ${{ steps.prs.outputs.result }}
         with:
           script: |
-            const MIN_APPROVALS = 3; // set the threshold you want
+            const MIN_APPROVALS = 5; // set the threshold you want
+            const REQUIRED_APPROVERS = ["user1", "user2"]; // List of required GitHub usernames
+            
             console.log("🔍 Raw PR list:", process.env.PR);
             const prNumbers = JSON.parse(process.env.PR || "[]");
             console.log("📋 Parsed PR numbers:", prNumbers);
@@ -50,8 +52,9 @@ jobs:
               latestReviews[r.user.login] = r.state;
               }
               const approvedCount = Object.values(latestReviews).filter(r => r === "APPROVED").length;
-
-              if (approvedCount >= MIN_APPROVALS) {
+              const hasRequiredApprovers = REQUIRED_APPROVERS.every(user => approvers.includes(user));
+               
+              if (approvedCount >= MIN_APPROVALS && hasRequiredApprovers) {
                 await github.rest.pulls.merge({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
